@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>react-flow</title>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <link href="https://unpkg.com/bootstrap@4.3.1/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+
+    <div class="p-5 m-auto text-center">
+      <div id="root"></div>
+    </div>
+
+    <script async type="module">
+
+      import esmImport from 'https://unpkg.com/@cypherlab/esm-import'
+
+      (async () => {
+
+        const FlowPlayground = await esmImport([ 
+            `${document.location.origin}/dist/playground.js`
+          // , 'https://unpkg.com/@cypherlab/react-flow'
+        ])
+
+        const props = {}
+        
+        ReactDOM.render(React.createElement(FlowPlayground, props), document.getElementById('root'))
+
+      })()
+
+    </script>
+
+  </body>
+</html>
