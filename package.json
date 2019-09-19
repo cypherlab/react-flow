@@ -1,7 +1,7 @@
 {
   "name": "@cypherlab/react-flow",
-  "version": "0.0.6",
-  "description": "Stepbar component for tunnel like ux's",
+  "version": "0.0.1",
+  "description": "Flow is the glue between sequenced components",
   "author": "Louis Grellet <louis.grellet@gmail.com>",
   "license": "ISC",
   "repository": "https://github.com/cypherlab/react-flow",

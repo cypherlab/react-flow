@@ -1,11 +1,11 @@
 # `@cypherlab/react-flow`
 
 <p align="center">
-  <img width="444" alt="screenshot" src="https://user-images.githubusercontent.com/503577/65076308-047c7600-d999-11e9-8225-89a8193bfc5b.png">
+  <img width="444" alt="screenshot" src="https://user-images.githubusercontent.com/503577/65241677-71e8ed80-dae4-11e9-9213-bf10c8ebc507.png">
 </p>
 
 <p align="center">
-  Flow component for tunnel like ux's.
+  Flow is the glue between sequenced components.
 </p>
 <p align="center">
   <a href="https://www.npmjs.com/package/@cypherlab/react-flow">
