@@ -1,7 +1,10 @@
+import Microdot from './bundle/microdot'
 
 
-const getPrevStep = (currentStep) => currentStep-1
-const getNextStep = (currentStep, steps) => currentStep+1 >= steps.length ? -1 : currentStep+1
+const getPrevFlow = (current) => current-1
+const getNextFlow = (current, flows) => current+1 >= flows.length ? -1 : current+1
+
+const FlowContext = React.createContext({});
 
 
 class Flow extends React.Component {
@@ -9,24 +12,26 @@ class Flow extends React.Component {
   constructor(props){
     super(props) 
 
-    const { currentStep: cs, initialStep: is, theme } = props
+    const { flows: f, current: cflow, initial: iflow, theme, cycle } = props
     
-    const steps = props.steps || []
-    const initialStep = is || 0
-    const currentStep = cs || is || 0
-    const prevStep = getPrevStep(currentStep)
-    const nextStep = getNextStep(currentStep, steps)
+    const flows = typeof f == 'string' ? f.split(',').map(id => ({ id })) : f || []
+    const initial = iflow || 0
+    const current = cflow || iflow || 0
+    const prev = getPrevFlow(current)
+    const next = getNextFlow(current, flows)
 
     this.state = { 
-        steps
-      , initialStep
-      , currentStep
-      , prevStep
-      , nextStep
+        flows
+      , initial
+      , current
+      , prev
+      , next
       , theme: theme || 'light'
+      , cycle: !!cycle || false
     }
 
-    this.setStep = this.setStep.bind(this)
+    this.set = this.set.bind(this)
+    this.get = this.get.bind(this)
   }
 
   componentDidMount() {
@@ -38,44 +43,60 @@ class Flow extends React.Component {
   }
 
 
-  // setStep() // next
-  // setStep(-1) // previous
-  // setStep(0,1,...) // specific
-  // setStep('initial') // initial step
-  setStep(index) {
-    const { steps, currentStep, initialStep } = this.state
-    let newStep
+  // set() // next
+  // set(-1) // previous
+  // set(0,1,...) // specific
+  // set('initial') // initial flow
+  set(index) {
+    const { flows, current, initial, cycle } = this.state
+    let newFlow
 
-    if(!isNaN(index)) newStep = index == -1 ? currentStep-1 < 0 ? 0 : currentStep-1 : index
-    else if(index == 'initital') newStep = initialStep
-    else newStep = currentStep+1 >= steps.length ? 0 : currentStep+1
+    // previous & specific case
+    if(!isNaN(index)) newFlow = index == -1 ? current-1 < 0 ? 0 : current-1 : index
+    // initial case
+    else if(index == 'initital') newFlow = initial
+    // default case (next)
+    else newFlow = current+1 >= flows.length 
+      ? cycle ? 0 : current 
+      : current+1
 
-    const prevStep = getPrevStep(newStep)
-    const nextStep = getNextStep(newStep, steps)
+    if(newFlow == current) return
+
+    const prev = getPrevFlow(newFlow)
+    const next = getNextFlow(newFlow, flows)
 
     this.setState({ 
-        currentStep: newStep
-      , prevStep 
-      , nextStep 
+        current: newFlow
+      , prev 
+      , next 
     })
   }
 
+  get(key) {
+    const { current, prev, next, flows } = this.state
+
+    const flow = {
+        current: { ...(flows[current] || {}), index: current }
+      , prev: { ...(flows[prev] || {}), index: prev }
+      , next: { ...(flows[next] || {}), index: next }
+      , flows: flows.map((f,i) => ({ ...f, index: i }))
+    }
+
+    return flow[key] || flow
+  }
 
   render() {
     const { children } = this.props
-    const { currentStep, prevStep, nextStep, steps } = this.state
-
-    const cs = { ...(steps[currentStep] || {}), index: currentStep }
-    const ps = { ...(steps[prevStep] || {}), index: prevStep }
-    const ns = { ...(steps[nextStep] || {}), index: nextStep }
-
-    const widgetProps = { steps, cs, ps, ns, setStep: this.setStep }
-
-    return (<div>
-      {React.cloneElement(children, widgetProps)}
-    </div>)
+    return (
+      <FlowContext.Provider value={this}>
+        {children(this)}
+      </FlowContext.Provider>
+    )
   }
 }
+
+
+
 
 
 
@@ -84,7 +105,34 @@ export default Flow
 
 
 
+export const Slot = class FlowSlot extends React.Component {
+  render() {
+    const { target, show, children, className } = this.props
+    return (
+      <FlowContext.Consumer>
+        { flow => {
+          const { current } = flow.get()
+          return (show || current.id == target )
+                  
+            ? (<div className={`flow-${target} ${className}`}>
+                {children}
+              </div>)
+            : null
+        }}
+      </FlowContext.Consumer>
+    )
+  }
+}
 
+export const FlowDebug = ({ flow, className }) => {
+  const { current, flows } = flow.get()
+  return (<div className={className||"py-3 m-auto"}>
+    <a href="javascript:" onClick={()=>flow.set('initital')} className="btn btn-sm btn-outline-dark mx-1" style={{minWidth: 'auto'}}>x</a>
+    <a href="javascript:" onClick={()=>flow.set(-1)} className="btn btn-sm btn-outline-dark mx-1" style={{minWidth: 'auto'}}>{`<`}</a>
+    <Microdot flow={flow} />
+    <a href="javascript:" onClick={()=>flow.set()} className="btn btn-sm btn-outline-dark mx-1" style={{minWidth: 'auto'}}>{`>`}</a>
+  </div>)
+}
 
 
 

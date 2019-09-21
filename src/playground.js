@@ -1,15 +1,7 @@
-import Flow from './index'
+import Flow, { Slot, FlowDebug } from './index'
 import DotBar from './bundle/dotbar'
 import NavMenu from './bundle/navmenu'
 
-
-
-const STEPS = [
-    { title: 'Cart', children: (<span>Cart</span>) }
-  , { title: 'Shipping', children: (<span>Shipping</span>) }
-  , { title: 'Recap', children: (<span>Recap</span>), hide: { prev: true } }
-  , { title: 'Payment', children: (<span>Payment</span>) }
-]
 
 
 const FlowContent = (props) => {
@@ -26,19 +18,47 @@ const FlowContent = (props) => {
 export default (props) => {
 
   return (<div className="m-auto col-3">
-    
-    <Flow {...props} 
-      steps={STEPS}
-      onRef={ref => (window.FlowRef = ref)}
-    >
-      <FlowContent />
-    </Flow>
 
-    <div className="py-5 m-auto">
-      <a href="javascript:" onClick={()=>window.FlowRef.setStep('initital')} className="d-block btn btn-sm btn-light mb-2">setStep('initital')</a>
-      <a href="javascript:" onClick={()=>window.FlowRef.setStep()} className="d-block btn btn-sm btn-light mb-2">setStep()</a>
-      <a href="javascript:" onClick={()=>window.FlowRef.setStep(-1)} className="d-block btn btn-sm btn-light mb-2">setStep(-1)</a>
-    </div>
+    <Flow flows={'item,cart,payment'} cycle={false} current={0}>
+      {(flow) => {
+
+        const { current, prev, next } = flow.get()
+
+        return (<div>
+          <FlowDebug flow={flow} />
+
+          <div className="bg-light p-4">
+            <h2>{current.id.toUpperCase()}</h2>
+
+            <Slot target="item">
+              Nice T-Shirt
+            </Slot>
+
+            <Slot target="cart">
+              Total: 25$
+            </Slot>
+
+            <Slot target="payment">
+              Status: Payed !
+            </Slot>
+
+            <div className="p-2 pt-5 overflow-auto">
+              { prev.index >= 0 && <button className="float-left btn btn-outline-dark" onClick={()=>flow.set(-1)}>{`< Back`}</button>}
+              { next.index >= 0 && <button className="float-right btn btn-warning" onClick={()=>flow.set()}>{`Next >`}</button>}
+              { current.id == 'payment' && <button className="float-right btn btn-success" onClick={()=>flow.set(0)}>Restart !</button>}
+            </div>
+          </div>
+
+        </div>)
+      }}
+    </Flow>
+    
 
   </div>)
 }
+
+
+
+
+
+

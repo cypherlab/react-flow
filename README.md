@@ -21,43 +21,108 @@ npm i @cypherlab/react-flow
 ```
 
 
-## Usage
-
-See [Live demo](https://raw.githack.com/cypherlab/react-flow/master/index.html)  
-See [Code example](https://github.com/cypherlab/react-flow/blob/master/index.html)  
+## Usage 
 
 ```js
-import Flow from '@cypherlab/react-flow'
+import Flow, { Slot } from '@cypherlab/react-flow'
 
-const props = {
-    steps: ['Cart', 'Shipping', 'Recap', 'Payment']
-  , theme: 'dark' 
-  , onRef: ref => (window['myFlow'] = ref)
-}
+<Flow flows='one,two,three'>
+  { flow => { 
+    // build your scenario here
+  }}
+</Flow>
+```
 
-// render
-<Flow {...props} />
+Scenario example:
 
-// ref usage
-window['myFlow'].setStep(3)
+See [Live demo](https://raw.githack.com/cypherlab/react-flow/master/index.html)  
+See [Code example](https://github.com/cypherlab/react-flow/blob/master/index.html) 
+
+```js
+<Flow flows='item,cart,payment'>
+  { flow => {
+
+    // access some flow context
+    const { current, prev, next } = flow.get()
+
+    return (<div>
+
+      <h2>{current.id.toUpperCase()}</h
+
+      <Slot target="item">
+        Nice T-Shirt
+      </Slot>
+
+      <Slot target="cart">
+        Total: 25$
+      </Slot>
+
+      <Slot target="payment">
+        Status: Payed !
+      </Slot>
+
+      { prev.index >= 0 && <a onClick={ ()=>flow.set(-1) }>{`< Back`}</a>}
+      { next.index >= 0 && <a onClick={ ()=>flow.set() }>{`Next >`}</a>}
+      { current.id == 'payment' && <a onClick={ ()=>flow.set(0) }>Restart !</a>}
+
+    </div>)
+  }}
+</Flow>
+```
+
+## Flow options
+
+| option        | info                                                            |
+|---------------|-----------------------------------------------------------------|
+| flows         | flows data. array of string. required                           |
+| loop          | if `true`, flow.set() will cycle back to flow 0. default `false`|
+
+
+
+
+## Flow instance methods
+
+#### get(context)
+
+`context` can be one of the following values `current|prev|next|flows`.
+If no `context` is specified, return an object containing all contexts.
+
+```js
+flow.get('current') 
+// { id: "item", index: 0 }
+
+flow.get('next') 
+// { id: "cart", index: 1 }
+
+flow.get() 
+// {
+//     current: {...}
+//   , prev: {...}
+//   , next: {...}
+//   , flows: [{...},...]
+// }
+```
+
+#### set(index)
+
+The `set()` function is used to navigate the flows.
+  
+```js
+flow.set() // next flow
+flow.set(-1) // previous flow
+flow.set(0,1,...) // specific flow
+flow.set('initial') // initial flow
 ```
 
 
 
-## Table options
+## Slot
 
 | option        | info                                                            |
 |---------------|-----------------------------------------------------------------|
-| steps         | steps data. array of anything. required                         |
-| onRef         |                                                                 |
-| onStep        |                                                                 |
-| theme         | predefined theme                                                |
-
-## Methods
-
-| option        | info                                                            |
-|---------------|-----------------------------------------------------------------|
-| setStep       |   |
+| target        | match flow `id`                                                 |
+| show          | if `true` show anyway                                           |
+| className     | apply class                                                     |
 
 
 
