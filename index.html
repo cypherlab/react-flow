@@ -22,8 +22,8 @@
       (async () => {
 
         const Playground = await esmImport([ 
-            `${document.location.origin}/dist/playground.js`
-          , 'https://unpkg.com/@cypherlab/react-flow/dist/playground.js'
+            `${document.location.origin}/dist/playground.esm.js`
+          , 'https://unpkg.com/@cypherlab/react-flow/dist/playground.esm.js'
         ])
 
         ReactDOM.render(React.createElement(Playground, {}), document.getElementById('root'))

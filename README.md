@@ -46,7 +46,7 @@ See [Code example](https://github.com/cypherlab/react-flow/blob/master/index.htm
 
     return (<div>
 
-      <h2>{current.id.toUpperCase()}</h
+      <h2>{current.id.toUpperCase()}</h2>
 
       <Slot target="item">
         Nice T-Shirt

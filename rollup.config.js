@@ -10,14 +10,31 @@ import livereload from 'live-server'
 dev && livereload.start({ file: 'index.html', watch: ['dist/playground.js'] })
 
 export default [
+
     {
       input: 'src/index.js',
       output: {
-        file: 'dist/index.js',
-        format: 'es'      
+        file: 'dist/index.cjs.js',
+        format: 'cjs',      
+        globals: { react: "React" }
       },
       external: [ 'react' ],
-      globals: { react: "React" },
+      plugins: [
+        babel(),
+        resolve(),
+        commonjs(),
+        terser()
+      ]
+    },
+
+    {
+      input: 'src/index.js',
+      output: {
+        file: 'dist/index.esm.js',
+        format: 'es',     
+        globals: { react: "React" }
+      },
+      external: [ 'react' ],
       plugins: [
         babel(),
         resolve(),
@@ -28,7 +45,7 @@ export default [
     {
       input: 'src/playground.js',
       output: {
-        file: 'dist/playground.js',
+        file: 'dist/playground.esm.js',
         format: 'es'      
       },
       plugins: [
