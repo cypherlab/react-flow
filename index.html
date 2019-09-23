@@ -21,14 +21,12 @@
 
       (async () => {
 
-        const FlowPlayground = await esmImport([ 
+        const Playground = await esmImport([ 
             `${document.location.origin}/dist/playground.js`
           , 'https://unpkg.com/@cypherlab/react-flow/dist/playground.js'
-        ], 'default', true)
+        ])
 
-        const props = {}
-        
-        ReactDOM.render(React.createElement(FlowPlayground, props), document.getElementById('root'))
+        ReactDOM.render(React.createElement(Playground, {}), document.getElementById('root'))
 
       })()
 

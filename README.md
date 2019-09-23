@@ -3,7 +3,6 @@
 <p align="center">
   <img width="444" alt="screenshot" src="https://user-images.githubusercontent.com/503577/65241677-71e8ed80-dae4-11e9-9213-bf10c8ebc507.png">
 </p>
-
 <p align="center">
   Flow is the glue between sequenced components.
 </p>
@@ -76,6 +75,7 @@ See [Code example](https://github.com/cypherlab/react-flow/blob/master/index.htm
 |---------------|-----------------------------------------------------------------|
 | flows         | flows data. array of string. required                           |
 | loop          | if `true`, flow.set() will cycle back to flow 0. default `false`|
+| onRef         | way to catch instance. `onRef={ flow => (window.MyFlow = flow) }`|
 
 
 

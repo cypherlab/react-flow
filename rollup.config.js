@@ -16,6 +16,8 @@ export default [
         file: 'dist/index.js',
         format: 'es'      
       },
+      external: [ 'react' ],
+      globals: { react: "React" },
       plugins: [
         babel(),
         resolve(),
