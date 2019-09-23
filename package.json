@@ -6,8 +6,9 @@
   "license": "ISC",
   "repository": "https://github.com/cypherlab/react-flow",
   "source": "src/index.js",
+  "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "main": "dist/index.umd.js",
+  "browser": "dist/index.umd.js",
   "scripts": {
     "watch": "npx rollup -c -w",
     "dev": "NODE_ENV=dev npm run watch",
@@ -31,7 +32,6 @@
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
     "live-server": "^1.2.1",
-    "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "rollup": "^1.20.3",
     "rollup-plugin-babel": "^4.3.3",
@@ -40,6 +40,6 @@
     "rollup-plugin-terser": "^5.1.1"
   },
   "dependencies": {
-    "esm": "^3.2.25"
+    "react": "^16.9.0"
   }
 }

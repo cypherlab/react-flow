@@ -4,10 +4,6 @@
     <script src="https://unpkg.com/@cypherlab/import" crossorigin></script>
     <script src="https://unpkg.com/react@16.9.0/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js" crossorigin></script>
-    <!-- 
-    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-    -->
     <link href="https://unpkg.com/bootstrap@4.3.1/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
@@ -23,10 +19,10 @@
         await ImportUtils.script([ 
             `${document.location.origin}/dist/playground.umd.js`
           , 'https://unpkg.com/@cypherlab/react-flow/dist/playground.umd.js'
-        ])
+        ], true, true)
 
         ReactDOM.render(
-            React.createElement(Playground, {})
+            React.createElement(Playground.default, {})
           , document.getElementById('root')
         )
 
