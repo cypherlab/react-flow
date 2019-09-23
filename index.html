@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>react-flow</title>
+    <script src="https://unpkg.com/@cypherlab/import" crossorigin></script>
     <script src="https://unpkg.com/react@16.9.0/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js" crossorigin></script>
     <!-- 
@@ -17,20 +18,20 @@
 
     <script async type="module">
 
-      import esmImport from 'https://unpkg.com/@cypherlab/esm-import'
-
       (async () => {
 
-        const Playground = await esmImport([ 
-            `${document.location.origin}/dist/playground.esm.js`
-          , 'https://unpkg.com/@cypherlab/react-flow/dist/playground.esm.js'
+        await ImportUtils.script([ 
+            `${document.location.origin}/dist/playground.umd.js`
+          , 'https://unpkg.com/@cypherlab/react-flow/dist/playground.umd.js'
         ])
 
-        ReactDOM.render(React.createElement(Playground, {}), document.getElementById('root'))
+        ReactDOM.render(
+            React.createElement(Playground, {})
+          , document.getElementById('root')
+        )
 
-      })()
+      })();
 
     </script>
-
   </body>
 </html>

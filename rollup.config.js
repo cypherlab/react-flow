@@ -9,50 +9,39 @@ import livereload from 'live-server'
 
 dev && livereload.start({ file: 'index.html', watch: ['dist/playground.js'] })
 
+const Bundle = (filename, format, exportName) => { 
+
+  const bundle = {
+    input: `src/${filename}.js`,
+    output: {
+      file: `dist/${filename}.${format}.js`,
+      format: ({ esm: 'es', umd: 'umd' })[format],     
+      globals: { react: "React" }
+    },
+    external: [ 'react' ],
+    plugins: [
+      babel(),
+      resolve(),
+      commonjs(),
+      terser()
+    ]
+  }
+
+  if(format == 'umd'){
+    bundle.output.exports = 'named'
+    bundle.output.name = exportName
+  }
+
+
+  return bundle
+}
+
+
+
 export default [
 
-    {
-      input: 'src/index.js',
-      output: {
-        file: 'dist/index.cjs.js',
-        format: 'cjs',      
-        globals: { react: "React" }
-      },
-      external: [ 'react' ],
-      plugins: [
-        babel(),
-        resolve(),
-        commonjs(),
-        terser()
-      ]
-    },
+    Bundle('index', 'esm')
+  , Bundle('index', 'umd', 'Flow')
+  , Bundle('playground', 'umd', 'Playground')
 
-    {
-      input: 'src/index.js',
-      output: {
-        file: 'dist/index.esm.js',
-        format: 'es',     
-        globals: { react: "React" }
-      },
-      external: [ 'react' ],
-      plugins: [
-        babel(),
-        resolve(),
-        commonjs(),
-        terser()
-      ]
-    },
-    {
-      input: 'src/playground.js',
-      output: {
-        file: 'dist/playground.esm.js',
-        format: 'es'      
-      },
-      plugins: [
-        babel(),
-        resolve(),
-        commonjs(),
-        terser()
-      ]
-    }
 ]
