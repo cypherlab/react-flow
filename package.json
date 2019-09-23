@@ -1,6 +1,6 @@
 {
   "name": "@cypherlab/react-flow",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Flow is the glue between sequenced components",
   "author": "Louis Grellet <louis.grellet@gmail.com>",
   "license": "ISC",
