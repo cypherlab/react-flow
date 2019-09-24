@@ -16,13 +16,13 @@
 
 ## Install
 ```
-npm i @cypherlab/react-flow
+yarn add @cypherlab/react-flow
 ```
 
 
 ## Usage 
 
-```js
+```JSX
 import Flow, { Slot } from '@cypherlab/react-flow'
 
 <Flow flows='one,two,three'>
@@ -32,12 +32,11 @@ import Flow, { Slot } from '@cypherlab/react-flow'
 </Flow>
 ```
 
-Scenario example:
+## Example
 
 See [Live demo](https://raw.githack.com/cypherlab/react-flow/master/index.html)  
-See [Code example](https://github.com/cypherlab/react-flow/blob/master/index.html) 
 
-```js
+```JSX
 <Flow flows='item,cart,payment'>
   { flow => {
 
@@ -126,10 +125,13 @@ flow.set('initial') // initial flow
 
 
 
-## Test 
 
-You can play with the component in the browser via the `index.html`.
+
+## Dev / Playground 
+
+Source files located in `src` directory.   
+Edit `src/playground.js` to build your playground.
 
 ```js
-(yarn|npm) run dev
+yarn run dev
 ```
