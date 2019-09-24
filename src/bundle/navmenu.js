@@ -1,3 +1,5 @@
+import React from 'react'
+
 // const btnClass = `text-light`
 const btnClass = `btn btn-light`
 

@@ -1,3 +1,4 @@
+import React from 'react'
 import Flow, { Slot, FlowDebug } from './index'
 import DotBar from './bundle/dotbar'
 import NavMenu from './bundle/navmenu'

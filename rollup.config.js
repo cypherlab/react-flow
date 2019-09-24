@@ -8,10 +8,9 @@ import livereload from 'live-server'
 const pro = process.env.NODE_ENV == 'production'
 const dev = process.env.NODE_ENV == 'dev'
 
-
 const external = [ 'react' ]
-const globals = { react: 'React' }
-const plugins = [
+const globals  = { react: 'React' }
+const plugins  = [
   babel(),
   resolve(),
   commonjs(),
@@ -25,23 +24,22 @@ const config = [
     plugins,
     output: [
       {
-        file: pkg.browser,
-        format: 'umd',
-        name: 'Flow',
-        exports: 'named',
-        globals
-      },
-      {
         file: pkg.main,
         format: 'cjs',
-        name: 'Flow',
-        exports: 'named',
-        globals
+        globals,
+        exports: 'named'
       },
-      // {
-      //   file: pkg.module,
-      //   format: 'es',
-      // }
+      {
+        file: pkg.module,
+        format: 'es'
+      },
+      {
+        file: pkg.browser,
+        format: 'umd',
+        globals,
+        exports: 'named',
+        name: 'Flow'
+      }
     ]
   },
   {
@@ -52,20 +50,16 @@ const config = [
       {
         file: 'dist/playground.umd.js',
         format: 'umd',
-        name: 'Playground',
+        globals,
         exports: 'named',
-        globals
-      },
-      // {
-      //   file: 'dist/playground.esm.js',
-      //   format: 'es',
-      // }
+        name: 'Playground'
+      }
     ]
   }
 ]
 
 
-dev && livereload.start({ file: 'index.html', watch: ['dist/playground.js'] });
+dev && livereload.start({ file: 'index.html', watch: ['dist/playground.umd.js'] });
 
 
 export default config
